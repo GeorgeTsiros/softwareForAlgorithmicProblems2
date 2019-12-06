@@ -1,0 +1,10 @@
+language: cpp
+
+compiler:
+  - gcc
+  
+script:
+  - cd main
+  - make
+  - make tests
+  - make clean
