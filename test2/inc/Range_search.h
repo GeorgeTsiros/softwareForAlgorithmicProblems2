@@ -13,7 +13,7 @@
 #include "HashTable.h"
 #include "Buckets.h"
 #include "Distance.h"
-#include "../cluster/Cluster.h"
+#include "Cluster.h"
 
 //LSH Clustering
 void Range_search(std::map<std::vector<double>, MapNode>&, HashTable**, std::vector<std::vector<int>> &, std::vector<double> &, std::vector<std::vector<double>>&, std::vector<int> &, int &, int &, double &, bool, bool&, int&);

@@ -1,4 +1,4 @@
-#include "../../include/LSH/general_functions.h"
+#include "../../inc/general_functions.h"
 
 using namespace std;
 extern bool metric;
