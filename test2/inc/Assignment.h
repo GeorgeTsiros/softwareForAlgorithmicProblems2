@@ -6,9 +6,9 @@
 #include <string>
 #include "Cluster.h"
 #include "Point_Info.h"
-#include "../Distance.h"
-#include "../main_func.h"
-#include "../cmain_func.h"
+#include "Distance.h"
+#include "main_func.h"
+#include "cmain_func.h"
 
 // void Lloyds_Assignment(Cluster **, std::vector<std::vector<double>>&, std::vector<std::vector<double>>&, std::vector<std::string>&);
 // void LSH_Assignment(HashTable**, Cluster **, std::vector<std::vector<double>>&, std::vector<std::vector<double>>&, std::vector<std::string>&, int&, int&, int&);

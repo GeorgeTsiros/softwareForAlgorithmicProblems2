@@ -1,3 +1,5 @@
+#include "../../inc/Distance.h"
+
 
 extern std::vector<std::vector<double>> Distance_Table;
 extern std::vector<int> Cluster_position;

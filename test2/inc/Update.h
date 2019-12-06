@@ -6,7 +6,7 @@
 #include <algorithm>    // std::find
 #include "Cluster.h"
 #include "Point_Info.h"
-#include "../Distance.h"
+#include "Distance.h"
 
 std::vector<double> add_vectors(std::vector<double>&, std::vector<double>&);
 std::vector<double> calculate_average(std::vector<double>&, int);

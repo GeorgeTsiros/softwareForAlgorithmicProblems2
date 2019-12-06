@@ -8,7 +8,7 @@
 #include <algorithm> //find
 #include <math.h>	//pow
 #include "Cluster.h"
-#include "../Distance.h"
+#include "Distance.h"
 
 void Random_Initialization(std::vector<std::vector<double>>&, std::vector<std::vector<double>>&, int&);
 void K_means_plusplus(std::vector<std::vector<double>>&, std::vector<std::vector<double>>&, int&);

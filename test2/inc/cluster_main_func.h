@@ -11,13 +11,13 @@
 #include <fstream>
 #include <sstream>
 #include <chrono>
-#include "../../inc/Cluster.h"
-#include "../../inc/Initialization.h"
-#include "../../inc/Assignment.h"
-#include "../../inc/Update.h"
-#include "../../inc/Silhouette.h"
-#include "../../inc/HashTable.h"
-#include "../../inc/cube_HashTable.h"
+#include "Cluster.h"
+#include "Initialization.h"
+#include "Assignment.h"
+#include "Update.h"
+#include "Silhouette.h"
+#include "HashTable.h"
+#include "cube_HashTable.h"
 
 void cluster_main_func(std::vector<std::vector<double>>&, std::vector<std::string>& id, std::string, int&, int&, int&, int&, int&, int&, int&, bool&);
 

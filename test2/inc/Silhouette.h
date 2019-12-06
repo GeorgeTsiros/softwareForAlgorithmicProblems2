@@ -6,7 +6,7 @@
 #include "Cluster.h"
 #include <fstream>
 #include <sstream>
-#include "../Distance.h"
+#include "Distance.h"
 
 double Silhouette(std::vector<std::vector<double>>&, Cluster**, int&, bool&, std::ofstream&);
 double calc_distance(std::vector<double>&, Cluster**, int);
