@@ -3,7 +3,7 @@
 
 using namespace std;
 
-void NN_search(HashTable **hashTables, std::vector<std::vector<int>> &g, std::vector<double> &query, std::vector<int> &fi, int &L, int &k, bool Euclidean, std::ofstream &output, double &ApproxDist, double &averagetime)
+void NN_search(HashTable **hashTables, std::vector<std::vector<int>> &g, std::vector<double> &query, std::vector<int> &fi, int &L, int &k, bool Manhattan, std::ofstream &output, double &ApproxDist, double &averagetime)
 {
 	int tmpfi;
 	long double distance;
@@ -28,7 +28,7 @@ void NN_search(HashTable **hashTables, std::vector<std::vector<int>> &g, std::ve
 		for (std::list<Node>::iterator it = List.begin(); it!=List.end(); it++)
 		{
 			std::vector<double> p(it->get_p());
-			if (Euclidean)
+			if (Manhattan)
 			{
 				// check if gs are same
 				std::vector<int> pq(it->get_g());
@@ -37,7 +37,7 @@ void NN_search(HashTable **hashTables, std::vector<std::vector<int>> &g, std::ve
 					//paralipsi ++lines ??
 					continue;
 				}
-				distance = Euclidean_Distance(query,p);
+				distance = Manhattan_Distance(query,p);
 			}
 			else
 				distance = 1 - Cosine_Similarity(query,p);

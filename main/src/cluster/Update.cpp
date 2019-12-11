@@ -42,7 +42,7 @@ double calculate_objectiveFunc(std::vector<double>& pointA, std::vector<Info>& A
 		if (pointA == pointB)
 			continue;
 		int pointB_position = Array[j].get_Pos_Id();
-		// value += Euclidean_Distance(pointA, pointB);
+		// value += Manhattan_Distance(pointA, pointB);
 		value += Find_Distance(pointA, pointB, pointA_position, pointB_position);
 	}
 

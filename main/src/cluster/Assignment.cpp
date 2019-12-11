@@ -29,7 +29,7 @@ void Lloyds_Assignment(std::map<std::vector<double>, std::vector<double>>& map, 
 			else
 			{
 				if (metric == 1)
-					dist = Euclidean_Distance(Points[i], Cluster_Table[j]);
+					dist = Manhattan_Distance(Points[i], Cluster_Table[j]);
 				else
 					dist = 1 - Cosine_Similarity(Points[i], Cluster_Table[j]);
 			}

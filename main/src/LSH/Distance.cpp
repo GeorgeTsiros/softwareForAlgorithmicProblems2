@@ -1,16 +1,17 @@
 #include "../../inc/Distance.h"
 
-
 extern std::vector<std::vector<double>> Distance_Table;
 extern std::vector<int> Cluster_position;
 extern bool metric;
 
-long double Euclidean_Distance(std::vector<double> & A, std::vector<double> &B)
+long double Manhattan_Distance(std::vector<double> & A, std::vector<double> &B)
 {
  	long double sum = 0;
  	for(unsigned int i = 0;i<A.size();i++)
  	{
- 		sum += pow((double)(A[i] - B[i]),2);
+ 		sum += A[i] - B[i] > 0 ? 
+                    A[i] - B[i] : 
+                    B[i] - A[i];
  	}
  	
  	return sqrtl(sum);
@@ -77,7 +78,7 @@ double Find_Distance(std::vector<double>& A, std::vector<double>& B, int& posA, 
 	else
 	{
 		if (metric == 1)
-			distance = Euclidean_Distance(A, B);
+			distance = Manhattan_Distance(A, B);
 		else
 			distance = 1 - Cosine_Similarity(A, B);
 

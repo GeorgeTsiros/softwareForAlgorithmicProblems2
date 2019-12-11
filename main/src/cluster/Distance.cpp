@@ -1,6 +1,6 @@
 #include "../../inc/Distance.h"
 
-long double Euclidean_Distance(std::vector<double> & A, std::vector<double> &B)
+long double Manhattan_Distance(std::vector<double> & A, std::vector<double> &B)
 {
  	long double sum = 0;
  	for(unsigned int i = 0;i<A.size();i++)

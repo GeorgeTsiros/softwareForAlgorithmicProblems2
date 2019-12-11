@@ -58,7 +58,7 @@ void cluster_main_func(std::vector<std::vector<double>>& Points, std::vector<std
 		k_cube = (int)log2(Points.size());
 	number_of_buckets = pow(2,k_cube); 
 	cube = new HashTable(number_of_buckets);
-	// Euclidean metric
+	// Manhattan metric
 	if (metric == 1)
 		cube->hashDataset(Points, id, coinmap, k_cube, w);
 	else
@@ -75,26 +75,28 @@ void cluster_main_func(std::vector<std::vector<double>>& Points, std::vector<std
 
 
 		bool k_means_flag;
-		for (int r=0;r<6;r++)
+		for (int r=0;r<4;r++)
 		{
 			Cluster_Table = tmp_Cluster_Table;
 			Cluster_position = tmp_Cluster_position;
-			outputfile <<"Algorithm: "<<q+1<<" x ";
+			if(q==0){
+				outputfile <<"Algorithm: Random Initialization ";
+			}
+			else{
+				outputfile <<"Algorithm: K-Means Initialization ";
+			}
+			
 			if (r == 0)
-				outputfile <<1<<" x "<<1<<std::endl;
+				outputfile <<"with Lloyd's Assignment with K means"<<std::endl;
 			else if (r == 1)
-				outputfile <<1<<" x "<<2<<std::endl;
+				outputfile <<"with Lloyd's Assignment with PAM improved"<<std::endl;
 			else if (r == 2)
-				outputfile <<2<<" x "<<1<<std::endl;
+				outputfile <<"with LSH Assignment with K means"<<std::endl;
 			else if (r == 3)
-				outputfile <<2<<" x "<<2<<std::endl;
-			else if (r == 4)
-				outputfile <<3<<" x "<<1<<std::endl;
-			else if (r == 5)
-				outputfile <<3<<" x "<<2<<std::endl;
+				outputfile <<"with LSH Assignment with PAM improved"<<std::endl;
 			
 			if (metric_flag == 1)
-				outputfile <<"Metric: Euclidean"<<std::endl;
+				outputfile <<"Metric: Manhattan"<<std::endl;
 			else
 				outputfile <<"Metric: Cosine"<<std::endl;
 
@@ -124,10 +126,6 @@ void cluster_main_func(std::vector<std::vector<double>>& Points, std::vector<std
 				{
 					LSH_flag = 1;
 					LSH_Assignment(new_map, hashTables, cluster, Points, Cluster_Table, id, k_lsh, L, w, k_means_flag);
-				}
-				else if (r == 4 || r == 5)
-				{
-					Hypercube_Assignment(new_map, cube, cluster, Points, Cluster_Table, id, coinmap, k_cube, M, probes, w, k_means_flag);
 				}
 				
 				if (LSH_flag)

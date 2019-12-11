@@ -17,7 +17,7 @@
 
 //LSH Clustering
 void Range_search(std::map<std::vector<double>, MapNode>&, HashTable**, std::vector<std::vector<int>> &, std::vector<double> &, std::vector<std::vector<double>>&, std::vector<int> &, int &, int &, double &, bool, bool&, int&);
-//Euclidean and Cosine
+//Manhattan and Cosine
 void Range_search(HashTable **, std::vector<std::vector<int>>&, std::vector<double>&, std::vector<int>&, int &, int &, double&, bool, double&);
 
 #endif

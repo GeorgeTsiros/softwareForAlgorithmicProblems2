@@ -4,7 +4,7 @@ using namespace std;
 extern bool metric;
 
 //stores Dataset and QuerySet
-void cube_storeDataset(std::vector<std::vector<double>> &dataset, std::vector<std::string> &id,char *input_file,int &hashTable_lines, bool &euclidean_flag, double &Radius)
+void cube_storeDataset(std::vector<std::vector<double>> &dataset, std::vector<std::string> &id,char *input_file,int &hashTable_lines, bool &Manhattan_flag, double &Radius)
 {
     std::string line;
     std::ifstream myfile(input_file);
@@ -21,15 +21,15 @@ void cube_storeDataset(std::vector<std::vector<double>> &dataset, std::vector<st
 		iss >> str;
 		if (count_lines == 0)
 		{
-			if ( !str.compare("Euclidean") || !str.compare("euclidean") )
+			if ( !str.compare("Manhattan") || !str.compare("manhattan") )
 			{
-				euclidean_flag = 1;
+				Manhattan_flag = 1;
 				count_lines++;
 				continue;
 			}	
 			else if ( !str.compare("Cosine") || !str.compare("cosine") )
 			{
-				euclidean_flag = 0;
+				Manhattan_flag = 0;
 				count_lines++;
 				continue;
 			}
@@ -42,8 +42,8 @@ void cube_storeDataset(std::vector<std::vector<double>> &dataset, std::vector<st
 			}
 			else
 			{
-				// default metric -> euclidean
-				euclidean_flag = 1;
+				// default metric -> Manhattan
+				Manhattan_flag = 1;
 				count_lines++;
 			}
 		}
@@ -63,8 +63,8 @@ void cube_storeDataset(std::vector<std::vector<double>> &dataset, std::vector<st
 	}
 }
 
-// void search_neighbors(HashTable *cube,std::vector<std::string> &id,std::vector<std::vector<double>> &queryset,std::map<int,bool> &mymap,int &M, int &probes,int &k,int &w, int &num_of_buckets, double &Radius,bool &Euclidean,std::ofstream &output)
-void cube_search_neighbors(std::map<std::vector<double>, MapNode>& assigned_elements, HashTable *cube,std::vector<std::string> &id,std::vector<std::vector<double>> &queryset,std::map<int,bool>& coinmap,int &M, int &probes,int &k,int &w, int &num_of_buckets, bool &Euclidean)
+// void search_neighbors(HashTable *cube,std::vector<std::string> &id,std::vector<std::vector<double>> &queryset,std::map<int,bool> &mymap,int &M, int &probes,int &k,int &w, int &num_of_buckets, double &Radius,bool &Manhattan,std::ofstream &output)
+void cube_search_neighbors(std::map<std::vector<double>, MapNode>& assigned_elements, HashTable *cube,std::vector<std::string> &id,std::vector<std::vector<double>> &queryset,std::map<int,bool>& coinmap,int &M, int &probes,int &k,int &w, int &num_of_buckets, bool &Manhattan)
 {
 	int position;
 	double maxfraction = 0;
@@ -81,7 +81,7 @@ void cube_search_neighbors(std::map<std::vector<double>, MapNode>& assigned_elem
 	{
 		for (int j=i+1;j<num_of_clusters;j++)
 		{
-			double dist = Euclidean_Distance(queryset[i], queryset[j]);
+			double dist = Manhattan_Distance(queryset[i], queryset[j]);
 			if (min_dist > dist)
 				min_dist = dist;
 		}
@@ -97,14 +97,14 @@ void cube_search_neighbors(std::map<std::vector<double>, MapNode>& assigned_elem
     {
     	 
 		query = *it; 
-		cube_find_hashFunction(g, query, coinmap, k, w, num_of_buckets, position,Euclidean);
+		cube_find_hashFunction(g, query, coinmap, k, w, num_of_buckets, position,Manhattan);
 		int TmpPos = position;
 		
 		long double dist = 0;
 		string id;
 
-		// Range_search(cube,g,query,TmpPos,M,probes,k,Radius,Euclidean,output,TrueDist);
-		// cube_Range_search(cube,g,query,TmpPos,M,probes,k,Radius,Euclidean,TrueDist);
+		// Range_search(cube,g,query,TmpPos,M,probes,k,Radius,Manhattan,output,TrueDist);
+		// cube_Range_search(cube,g,query,TmpPos,M,probes,k,Radius,Manhattan,TrueDist);
 		
 		if (Rad != 0)
 		{	
@@ -112,8 +112,8 @@ void cube_search_neighbors(std::map<std::vector<double>, MapNode>& assigned_elem
 			bool Stop_flag = 1;
 			while(1)
 			{
-				// Range_search(hashTables,g,query,fi,L,k,Radius,Euclidean,output,TrueDist);
-				cube_Range_search(assigned_elements, cube, g, query, queryset, TmpPos, M, probes, k, Radius, Euclidean, Stop_flag, cluster_pos);
+				// Range_search(hashTables,g,query,fi,L,k,Radius,Manhattan,output,TrueDist);
+				cube_Range_search(assigned_elements, cube, g, query, queryset, TmpPos, M, probes, k, Radius, Manhattan, Stop_flag, cluster_pos);
 				
 				if (!Stop_flag)
 					break;
@@ -127,7 +127,7 @@ void cube_search_neighbors(std::map<std::vector<double>, MapNode>& assigned_elem
 		// {
 		// 	TmpPos = position;
 		// 	//ApproxNN_search
-		// 	NN_search(cube,g,query,TmpPos,M,probes,k,Euclidean,output,ApproxDist,averageApproxtime);
+		// 	NN_search(cube,g,query,TmpPos,M,probes,k,Manhattan,output,ApproxDist,averageApproxtime);
 		// 	if (ApproxDist != 9999999.0 && TrueDist != 9999999.0 && TrueDist != 0)
 		// 	{
 		// 		double tmpfraction = ApproxDist/TrueDist; 
@@ -145,7 +145,7 @@ void cube_search_neighbors(std::map<std::vector<double>, MapNode>& assigned_elem
 	}
 }
 
-int cube_find_hashFunction(std::vector<int> &g, std::vector<double> &query, std::map<int,bool> &mymap, int &k, int &w, int &num_of_buckets, int &position, bool Euclidean)
+int cube_find_hashFunction(std::vector<int> &g, std::vector<double> &query, std::map<int,bool> &mymap, int &k, int &w, int &num_of_buckets, int &position, bool Manhattan)
 {
 	int h;
 	double t;
@@ -162,7 +162,7 @@ int cube_find_hashFunction(std::vector<int> &g, std::vector<double> &query, std:
 
 			double in_product = std::inner_product(v.begin(), v.end(), query.begin(), 0);
 			
-			// if (Euclidean)
+			// if (Manhattan)
 			if (metric == 1)
 			{
 				//random pick of t in [0,w) , double
@@ -207,7 +207,7 @@ int cube_find_hashFunction(std::vector<int> &g, std::vector<double> &query, std:
 		//empty vector to take new values
 		v.clear();
 	}
-	// if (Euclidean)
+	// if (Manhattan)
 	if (metric == 1)
 		position = binarytodecimal(tmpv);
 	else

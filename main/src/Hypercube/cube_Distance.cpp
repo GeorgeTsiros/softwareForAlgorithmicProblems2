@@ -1,6 +1,6 @@
 #include "../../inc/cube_Distance.h"
 
-long double cube_Euclidean_Distance(std::vector<double> & A, std::vector<double> &B)
+long double cube_Manhattan_Distance(std::vector<double> & A, std::vector<double> &B)
 {
 	long double sum = 0;
 	for(unsigned int i = 0;i<A.size();i++)

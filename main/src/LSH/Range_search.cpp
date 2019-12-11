@@ -3,7 +3,7 @@ using namespace std;
 
 extern bool metric;
 
-void Range_search(std::map<std::vector<double>, MapNode>& assigned_elements, HashTable **hashTables, std::vector<std::vector<int>> &g, std::vector<double> &query, std::vector<std::vector<double>> &queryset, std::vector<int> &fi, int &L, int &k, double &R, bool Euclidean, bool& Stop, int& cluster_pos)
+void Range_search(std::map<std::vector<double>, MapNode>& assigned_elements, HashTable **hashTables, std::vector<std::vector<int>> &g, std::vector<double> &query, std::vector<std::vector<double>> &queryset, std::vector<int> &fi, int &L, int &k, double &R, bool Manhattan, bool& Stop, int& cluster_pos)
 {
 	int tmpfi;
 	long double distance;
@@ -45,7 +45,7 @@ void Range_search(std::map<std::vector<double>, MapNode>& assigned_elements, Has
 			if (metric == 1)
 			{
 				// find distance for trueNN_neighbor
-				distance = Euclidean_Distance(query,p);
+				distance = Manhattan_Distance(query,p);
 				std::vector<int> pq(it->get_g());
 				// check if g(q) and q(p) are same for Range_search
 				// if g's are different -> flag = 0 else flag = 1
@@ -118,9 +118,9 @@ void Range_search(std::map<std::vector<double>, MapNode>& assigned_elements, Has
 }
 
 
-//Euclidean and Cosine Metric
-// void Range_search(HashTable **hashTables, std::vector<std::vector<int>> &g, std::vector<double> &query, std::vector<int> &fi, int &L, int &k, double &R, bool Euclidean, std::ofstream &output, double &TrueDist)
-void Range_search(HashTable **hashTables, std::vector<std::vector<int>> &g, std::vector<double> &query, std::vector<int> &fi, int &L, int &k, double &R, bool Euclidean, double &TrueDist)
+//Manhattan and Cosine Metric
+// void Range_search(HashTable **hashTables, std::vector<std::vector<int>> &g, std::vector<double> &query, std::vector<int> &fi, int &L, int &k, double &R, bool Manhattan, std::ofstream &output, double &TrueDist)
+void Range_search(HashTable **hashTables, std::vector<std::vector<int>> &g, std::vector<double> &query, std::vector<int> &fi, int &L, int &k, double &R, bool Manhattan, double &TrueDist)
 {
 	int tmpfi;
 	long double distance;
@@ -150,10 +150,10 @@ void Range_search(HashTable **hashTables, std::vector<std::vector<int>> &g, std:
 			bool g_flag = 1;
 			std::vector<double> p(it->get_p());  
 			
-			if (Euclidean)
+			if (Manhattan)
 			{
 				// find distance for trueNN_neighbor
-				distance = Euclidean_Distance(query,p);
+				distance = Manhattan_Distance(query,p);
 				std::vector<int> pq(it->get_g());
 				// check if g(q) and q(p) are same for Range_search
 				// if g's different flag = 0, else flag = 1

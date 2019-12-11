@@ -8,14 +8,14 @@ extern bool metric;
 
 void cube_Search_Neighbors(std::map<std::vector<double>, std::vector<double>>& map, HashTable* cube, Cluster** cluster, std::vector<std::vector<double>>& dataset, std::vector<std::vector<double>>& queryset, std::vector<std::string>& id, std::map<int, bool>& coinmap, int& k, int& M, int& probes, int& w, bool& k_means_flag)
 {
-	bool euclidean_flag = 1;
+	bool Manhattan_flag = 1;
 
 	int number_of_vertices = pow(2,k); 	
 	
 	//structure to track assigned points
 	std::map<std::vector<double>, MapNode> assigned_elements;
 	
-	cube_search_neighbors(assigned_elements, cube, id, queryset, coinmap, M, probes,k, w, number_of_vertices, euclidean_flag);
+	cube_search_neighbors(assigned_elements, cube, id, queryset, coinmap, M, probes,k, w, number_of_vertices, Manhattan_flag);
 	
 	// cout <<"Points assigned from range "<<assigned_elements.size()<<std::endl;
 	std::vector<std::vector<double>>::iterator qit;
@@ -45,7 +45,7 @@ void cube_Search_Neighbors(std::map<std::vector<double>, std::vector<double>>& m
 					else
 					{
 						if (metric == 1)
-							temp_dist = Euclidean_Distance(queryset[l], dataset[i]);
+							temp_dist = Manhattan_Distance(queryset[l], dataset[i]);
 						else
 							temp_dist = Cosine_Similarity(queryset[l], dataset[i]);	
 					}
@@ -74,7 +74,7 @@ void cube_Search_Neighbors(std::map<std::vector<double>, std::vector<double>>& m
 			for (int j=0;j<queryset.size();j++)
 			{
 				if (metric == 1)
-					tmp_dist = Euclidean_Distance(dataset[i], queryset[j]);
+					tmp_dist = Manhattan_Distance(dataset[i], queryset[j]);
 				else
 					tmp_dist = Cosine_Similarity(dataset[i], queryset[j]);
 				

@@ -4,8 +4,8 @@ using namespace std;
 
 extern bool metric;
 
-// void Range_search(HashTable *cube, std::vector<int> &g, std::vector<double> &query, int &position, int &M, int &probes, int &k, double &R, bool Euclidean, std::ofstream &output, double &TrueDist)
-void cube_Range_search(std::map<std::vector<double>, MapNode>& assigned_elements, HashTable *cube, std::vector<int> &g, std::vector<double> &query, std::vector<std::vector<double>> &queryset, int &position, int &M, int &probes, int &k, double &R, bool Euclidean, bool& Stop, int& cluster_pos)
+// void Range_search(HashTable *cube, std::vector<int> &g, std::vector<double> &query, int &position, int &M, int &probes, int &k, double &R, bool Manhattan, std::ofstream &output, double &TrueDist)
+void cube_Range_search(std::map<std::vector<double>, MapNode>& assigned_elements, HashTable *cube, std::vector<int> &g, std::vector<double> &query, std::vector<std::vector<double>> &queryset, int &position, int &M, int &probes, int &k, double &R, bool Manhattan, bool& Stop, int& cluster_pos)
 {
 	int tmpfi;
 	long double distance;
@@ -67,9 +67,9 @@ void cube_Range_search(std::map<std::vector<double>, MapNode>& assigned_elements
 		{
 			std::vector<double> p(it->get_p());
 			
-			// metric = 1 euclidean , metric = 0 cosine
+			// metric = 1 Manhattan , metric = 0 cosine
 			if (metric == 1)
-				distance = Euclidean_Distance(query,p);
+				distance = Manhattan_Distance(query,p);
 			else
 				distance = Cosine_Similarity(query,p);
 

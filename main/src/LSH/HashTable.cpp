@@ -83,7 +83,7 @@ Buckets* HashTable::access_bucket(int &position)
 		return NULL;
 }
 
-// Euclidean Distance for LSH
+// Manhattan Distance for LSH
 void HashTable::hashDataset(std::vector<std::vector<double>> &dataset, std::vector<std::string> &id,int k, int w)
 {
 	//must find position of bucket first
@@ -143,7 +143,7 @@ void HashTable::hashDataset(std::vector<std::vector<double>> &dataset, std::vect
 	}
 }
 
-// Euclidean Distance for Hypercube
+// Manhattan Distance for Hypercube
 void HashTable::hashDataset(std::vector<std::vector<double>> &dataset, std::vector<std::string> &id, std::map<int,bool>& mymap,int k,int w)
 {
 	int h;

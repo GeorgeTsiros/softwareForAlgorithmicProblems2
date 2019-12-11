@@ -84,7 +84,7 @@ Buckets* cube_HashTable::cube_access_bucket(int &position)
 		return NULL;
 }
 
-// Euclidean Distance
+// Manhattan Distance
 void cube_HashTable::cube_hashDataset(std::vector<std::vector<double>> &dataset, std::vector<std::string> &id, std::map<int,bool> &mymap,int k,int w)
 {
 	int h;

@@ -72,7 +72,7 @@ double avg_dist_sameCluster(Info& current_obj, std::vector<Info>& Array, bool& k
 		else
 		{
 			if (metric == 1)
-				dist += Euclidean_Distance(pointA, pointB);
+				dist += Manhattan_Distance(pointA, pointB);
 			else
 				dist += 1 - Cosine_Similarity(pointA, pointB);
 		}
@@ -112,7 +112,7 @@ double avg_dist_neighbor(Info& current_obj, Cluster** cluster, bool& k_means_fla
 		else
 		{
 			if (metric == 1)
-				dist += Euclidean_Distance(pointA, pointB);
+				dist += Manhattan_Distance(pointA, pointB);
 			else
 				dist += 1 - Cosine_Similarity(pointA, pointB);	
 		}

@@ -7,11 +7,10 @@
 #include <list>
 #include <string.h>
 #include <stdlib.h>
-#include <chrono>
 #include "HashTable.h"
 #include "Buckets.h"
 #include "Distance.h"
 
-void NN_search(HashTable *cube, std::vector<int> &g, std::vector<double> &query, int &position, int &M, int &probes, int &k, bool Cosine, std::ofstream &output, double&, double&);
+void NN_search(HashTable **hashTables, std::vector<std::vector<int>> &g, std::vector<double> &query, std::vector<int> &fi, int &L, int &k, bool Cosine, std::ofstream &output,double &, double&);
 
 #endif

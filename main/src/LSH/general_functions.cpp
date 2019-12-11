@@ -4,7 +4,7 @@ using namespace std;
 extern bool metric;
 
 //stores Dataset and QuerySet
-void storeDataset(std::vector<std::vector<double>> &dataset, std::vector<std::string> &id,char *input_file,int &hashTable_lines, bool &euclidean_flag, double &Radius)
+void storeDataset(std::vector<std::vector<double>> &dataset, std::vector<std::string> &id,char *input_file,int &hashTable_lines, bool &Manhattan_flag, double &Radius)
 {
     std::string line;
     std::ifstream myfile(input_file);
@@ -21,15 +21,15 @@ void storeDataset(std::vector<std::vector<double>> &dataset, std::vector<std::st
 		iss >> str;
 		if (count_lines == 0)
 		{
-			if ( !str.compare("Euclidean") || !str.compare("euclidean") )
+			if ( !str.compare("Manhattan") || !str.compare("manhattan") )
 			{
-				euclidean_flag = 1;
+				Manhattan_flag = 1;
 				count_lines++;
 				continue;
 			}	
 			else if ( !str.compare("Cosine") || !str.compare("cosine") )
 			{
-				euclidean_flag = 0;
+				Manhattan_flag = 0;
 				count_lines++;
 				continue;
 			}
@@ -42,8 +42,8 @@ void storeDataset(std::vector<std::vector<double>> &dataset, std::vector<std::st
 			}
 			else
 			{
-				// default metric -> euclidean
-				euclidean_flag = 1;
+				// default metric -> Manhattan
+				Manhattan_flag = 1;
 				count_lines++;
 			}
 		}
@@ -64,7 +64,7 @@ void storeDataset(std::vector<std::vector<double>> &dataset, std::vector<std::st
 	}
 }
 
-void search_neighbors(std::map<std::vector<double>, MapNode>& assigned_elements, HashTable **hashTables,std::vector<std::string> &id,std::vector<std::vector<double>> &queryset,int &L,int &k,int &w, int &num_of_buckets, bool Euclidean) 
+void search_neighbors(std::map<std::vector<double>, MapNode>& assigned_elements, HashTable **hashTables,std::vector<std::string> &id,std::vector<std::vector<double>> &queryset,int &L,int &k,int &w, int &num_of_buckets, bool Manhattan) 
 {
 	int counter=0;
 	int tmpfi;
@@ -88,7 +88,7 @@ void search_neighbors(std::map<std::vector<double>, MapNode>& assigned_elements,
 		{
 			double dist;
 			if (metric == 1)
-				dist = Euclidean_Distance(queryset[i], queryset[j]);
+				dist = Manhattan_Distance(queryset[i], queryset[j]);
 			else
 				dist = 1 - Cosine_Similarity(queryset[i], queryset[j]);
 
@@ -112,7 +112,7 @@ void search_neighbors(std::map<std::vector<double>, MapNode>& assigned_elements,
 		// create L*fi hashFunctions and L*g Functions for every query
 		for (int i=0;i<L;i++)
 		{
-			find_hashFunction(tmpg, query, k, w, num_of_buckets, tmpfi,Euclidean);
+			find_hashFunction(tmpg, query, k, w, num_of_buckets, tmpfi,Manhattan);
 			g.push_back(tmpg);
 			fi.push_back(tmpfi);
 			tmpg.erase(tmpg.begin(),tmpg.end());
@@ -125,8 +125,8 @@ void search_neighbors(std::map<std::vector<double>, MapNode>& assigned_elements,
 		bool Stop_flag = 1;
 		while(1)
 		{
-			// Range_search(assigned_elements,hashTables,g,query,queryset,fi,L,k,Radius,Euclidean,Stop_flag,cluster_pos);
-			Range_search(assigned_elements,hashTables,g,query,queryset,fi,L,k,Radius,Euclidean,Stop_flag,i);
+			// Range_search(assigned_elements,hashTables,g,query,queryset,fi,L,k,Radius,Manhattan,Stop_flag,cluster_pos);
+			Range_search(assigned_elements,hashTables,g,query,queryset,fi,L,k,Radius,Manhattan,Stop_flag,i);
 			if (!Stop_flag)
 				break;
 			Radius = Radius * 2;
@@ -138,7 +138,7 @@ void search_neighbors(std::map<std::vector<double>, MapNode>& assigned_elements,
 		// if (Radius != 0)
 		// {
 		// 	//ApproxNN_search
-		// 	NN_search(hashTables,g,query,fi,L,k,Euclidean,output,ApproxDist,averageApproxtime);
+		// 	NN_search(hashTables,g,query,fi,L,k,Manhattan,output,ApproxDist,averageApproxtime);
 		// 	if (ApproxDist != 9999999.0 && TrueDist != 9999999.0 && TrueDist != 0)
 		// 	{
 		// 		double tmpfraction = ApproxDist/TrueDist; 
@@ -156,8 +156,8 @@ void search_neighbors(std::map<std::vector<double>, MapNode>& assigned_elements,
 }
 
 
-// void search_neighbors(HashTable **hashTables,std::vector<std::string> &id,std::vector<std::vector<double>> &queryset,int &L,int &k,int &w, int &num_of_buckets, double &Radius,bool Euclidean,std::ofstream &output)
-void search_neighbors(HashTable **hashTables,std::vector<std::string> &id,std::vector<std::vector<double>> &queryset,int &L,int &k,int &w, int &num_of_buckets, double &Radius,bool Euclidean)
+// void search_neighbors(HashTable **hashTables,std::vector<std::string> &id,std::vector<std::vector<double>> &queryset,int &L,int &k,int &w, int &num_of_buckets, double &Radius,bool Manhattan,std::ofstream &output)
+void search_neighbors(HashTable **hashTables,std::vector<std::string> &id,std::vector<std::vector<double>> &queryset,int &L,int &k,int &w, int &num_of_buckets, double &Radius,bool Manhattan)
 {
 	int counter=0;
 	int tmpfi;
@@ -181,7 +181,7 @@ void search_neighbors(HashTable **hashTables,std::vector<std::string> &id,std::v
 		// create L*fi hashFunctions and L*g Functions for every query
 		for (int i=0;i<L;i++)
 		{
-			find_hashFunction(tmpg, query, k, w, num_of_buckets, tmpfi,Euclidean);
+			find_hashFunction(tmpg, query, k, w, num_of_buckets, tmpfi,Manhattan);
 			g.push_back(tmpg);
 			fi.push_back(tmpfi);
 			tmpg.erase(tmpg.begin(),tmpg.end());
@@ -195,13 +195,13 @@ void search_neighbors(HashTable **hashTables,std::vector<std::string> &id,std::v
 		long double dist = 0;
 		string id;
 		
-		// Range_search(hashTables,g,query,fi,L,k,Radius,Euclidean,output,TrueDist);
-		Range_search(hashTables,g,query,fi,L,k,Radius,Euclidean,TrueDist);
+		// Range_search(hashTables,g,query,fi,L,k,Radius,Manhattan,output,TrueDist);
+		Range_search(hashTables,g,query,fi,L,k,Radius,Manhattan,TrueDist);
 		
 		// if (Radius != 0)
 		// {
 		// 	//ApproxNN_search
-		// 	NN_search(hashTables,g,query,fi,L,k,Euclidean,output,ApproxDist,averageApproxtime);
+		// 	NN_search(hashTables,g,query,fi,L,k,Manhattan,output,ApproxDist,averageApproxtime);
 		// 	if (ApproxDist != 9999999.0 && TrueDist != 9999999.0 && TrueDist != 0)
 		// 	{
 		// 		double tmpfraction = ApproxDist/TrueDist; 
@@ -224,7 +224,7 @@ void search_neighbors(HashTable **hashTables,std::vector<std::string> &id,std::v
 	cout <<"Average Time of ApproxSearch: "<<averageApproxtime/(queryset.size())<<std::endl;
 }
 
-int find_hashFunction(std::vector<int> &g, std::vector<double> &query, int &k, int &w, int &num_of_buckets, int &fi, bool Euclidean)
+int find_hashFunction(std::vector<int> &g, std::vector<double> &query, int &k, int &w, int &num_of_buckets, int &fi, bool Manhattan)
 {
 	int counter=0;
 	// int fi;
@@ -242,7 +242,7 @@ int find_hashFunction(std::vector<int> &g, std::vector<double> &query, int &k, i
 			// double in_product = std::inner_product(row->begin(), row->end(), v.begin(), 0);
 			double in_product = std::inner_product(v.begin(), v.end(), query.begin(), 0);
 			
-			// if (Euclidean)
+			// if (Manhattan)
 			if (metric == 1)
 			{
 				//random pick of t in [0,w) , double
@@ -271,7 +271,7 @@ int find_hashFunction(std::vector<int> &g, std::vector<double> &query, int &k, i
 		//empty vector to take new values
 		v.clear();
 	}
-	// if (Euclidean)
+	// if (Manhattan)
 	if (metric == 1)
 	{
 		std::hash<std::string> hash_fn;

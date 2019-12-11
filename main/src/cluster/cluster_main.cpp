@@ -20,7 +20,7 @@ int main(int argc, char const *argv[])
 	std::string input_file;
 	std::string output_file;
 	std::string conf_file;
-	std::string metric = "euclidean";
+	std::string metric = "Manhattan";
 	//read args
 	for (int i=0;i<argc;i++)
 	{
@@ -186,7 +186,7 @@ int main(int argc, char const *argv[])
 	}
 	
 	bool metric_flag;
-	if (metric == "euclidean")
+	if (metric == "manhattan")
 		metric_flag = 1;
 	else if (metric == "cosine")
 		metric_flag = 0;

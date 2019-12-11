@@ -9,13 +9,13 @@ extern bool metric;
 //dataset = Points , queryset = Cluster_Table
 void Search_Neighbors(std::map<std::vector<double>, std::vector<double>>& map, HashTable** hashTables, Cluster** cluster, std::vector<std::vector<double>>& dataset, std::vector<std::vector<double>>& queryset, std::vector<std::string>& id, int& k, int& L, int& w, bool& k_means_flag)
 {	
-	bool euclidean_flag = 1;
+	bool Manhattan_flag = 1;
 
 	// std::cout <<endl<< "Number of lines in input file: " << dataset.size()<<std::endl;;
     
     //number of buckets in each hash Table
     int number_of_buckets;
-    // metric = 1 euclidean, metric = 0 cosine
+    // metric = 1 Manhattan, metric = 0 cosine
     if (metric == 1)
     	number_of_buckets = dataset.size()/4;
 	else
@@ -26,7 +26,7 @@ void Search_Neighbors(std::map<std::vector<double>, std::vector<double>>& map, H
 	//structure to track assigned points
 	std::map<std::vector<double>, MapNode> assigned_elements;
 	// search neighbors from query_file
-	search_neighbors(assigned_elements, hashTables, id, queryset, L, k, w, number_of_buckets, euclidean_flag);
+	search_neighbors(assigned_elements, hashTables, id, queryset, L, k, w, number_of_buckets, Manhattan_flag);
 
 
 	// cout <<"Points assigned from range "<<assigned_elements.size()<<std::endl;
@@ -56,7 +56,7 @@ void Search_Neighbors(std::map<std::vector<double>, std::vector<double>>& map, H
 					else
 					{
 						if (metric == 1)
-							temp_dist = Euclidean_Distance(queryset[l], dataset[i]);
+							temp_dist = Manhattan_Distance(queryset[l], dataset[i]);
 						else
 							temp_dist = 1 - Cosine_Similarity(queryset[l], dataset[i]);
 					}	
@@ -85,7 +85,7 @@ void Search_Neighbors(std::map<std::vector<double>, std::vector<double>>& map, H
 			for (int j=0;j<queryset.size();j++)
 			{
 				if (metric == 1)
-					tmp_dist = Euclidean_Distance(dataset[i], queryset[j]);
+					tmp_dist = Manhattan_Distance(dataset[i], queryset[j]);
 				else
 					tmp_dist = 1 - Cosine_Similarity(dataset[i], queryset[j]);
 				
@@ -128,15 +128,15 @@ void Search_Neighbors(char* input_file, char* query_file, int& k, int& L, int& w
 	int hashTable_lines = 0;
 	std::vector<std::string> id;
 	std::vector<std::vector<double>> dataset;
-	bool euclidean_flag = 1;
+	bool Manhattan_flag = 1;
 	double Radius=0;
 	//store dataset in memory for faster and multiple times access 
-	storeDataset(dataset, id,input_file, hashTable_lines,euclidean_flag,Radius);
+	storeDataset(dataset, id,input_file, hashTable_lines,Manhattan_flag,Radius);
 	std::cout <<endl<< "Number of lines in input file: " << hashTable_lines<<std::endl;;
     
     //number of buckets in each hash Table
     int number_of_buckets;
-    if (euclidean_flag)
+    if (Manhattan_flag)
 		number_of_buckets = hashTable_lines/4;
 	else
 		number_of_buckets = pow(2,k);
@@ -147,7 +147,7 @@ void Search_Neighbors(char* input_file, char* query_file, int& k, int& L, int& w
 	for (int i=0;i<L;i++)
 	{
 		hashTables[i] = new HashTable(number_of_buckets);
-		if (euclidean_flag)
+		if (Manhattan_flag)
 			hashTables[i]->hashDataset(dataset,id,k,w);
 		else
 			hashTables[i]->hashDataset(dataset,id,k);
@@ -159,12 +159,12 @@ void Search_Neighbors(char* input_file, char* query_file, int& k, int& L, int& w
 	id.clear();
 	
 	//store queryset in memory for faster and multiple times access 
-	storeDataset(queryset, id,query_file, queryset_lines,euclidean_flag,Radius);
+	storeDataset(queryset, id,query_file, queryset_lines,Manhattan_flag,Radius);
 	cout <<"Queryset lines "<<queryset_lines<<std::endl;
 	
 	// search neighbors from query_file
-	// search_neighbors(hashTables, id, queryset, L, k, w, number_of_buckets, Radius,euclidean_flag, outputfile);
-	search_neighbors(hashTables, id, queryset, L, k, w, number_of_buckets, Radius,euclidean_flag);
+	// search_neighbors(hashTables, id, queryset, L, k, w, number_of_buckets, Radius,Manhattan_flag, outputfile);
+	search_neighbors(hashTables, id, queryset, L, k, w, number_of_buckets, Radius,Manhattan_flag);
 	for (int i=0;i<L;i++)
 		delete hashTables[i];
 	delete[] hashTables;
